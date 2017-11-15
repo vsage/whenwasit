@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { CategoryListPage } from '../category-list/category-list.component'
 
 @Component({
   selector: 'page-home',
@@ -9,6 +10,10 @@ export class HomePage {
 
   constructor(public navCtrl: NavController) {
 
+  }
+  
+  startGame(){
+    this.navCtrl.push(CategoryListPage)
   }
 
 }
