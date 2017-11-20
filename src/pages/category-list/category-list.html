@@ -7,21 +7,17 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button color="dark" round icon-start (click)="openModal({category: 'sport'})">
-     <ion-icon name='construct' is-active="false"></ion-icon>
-     Sport
+  <button ion-button color="primary" round icon-start (click)="openModal({category: 'music'})">
+     <ion-icon name='headset' is-active="false"></ion-icon>
+     Music
    </button>
-   <button ion-button color="dark" round icon-start>
-     <ion-icon name='construct' is-active="false"></ion-icon>
+   <button ion-button color="danger" round icon-start (click)="openModal({category: 'cinema'})">
+     <ion-icon name='film' is-active="false"></ion-icon>
      Cinéma
    </button>
-   <button ion-button color="dark" round icon-start>
-     <ion-icon name='construct' is-active="false"></ion-icon>
-     Histoire
-   </button>
-   <button ion-button color="dark" round icon-start>
-     <ion-icon name='construct' is-active="false"></ion-icon>
-     Personnes Célèbres
+   <button ion-button color="light" round icon-start (click)="openModal({category: 'celebrity'})">
+     <ion-icon name='bowtie' is-active="false"></ion-icon>
+     Célébrités
    </button>
 
 </ion-content>

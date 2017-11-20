@@ -1,14 +1,16 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Platform, NavParams, ViewController } from "ionic-angular";
 import { ToastController } from 'ionic-angular';
+import { QuestionService } from './question.service';
 
 import * as _ from 'underscore';
 
 @Component({
   selector: "question",
-  templateUrl: "question.html"
+  templateUrl: "question.html",
+  providers: [QuestionService]
 })
-export class QuestionPage {
+export class QuestionPage implements OnInit {
 
   answerValue: any;
   hint: number = 0;
@@ -17,62 +19,28 @@ export class QuestionPage {
   score: number = 0;
   hidden1 = -1;
   hidden2 = -1;
-  questionsArray= [
-    {
-      question: "Quand est décédé Michael Jackson ?",
-      answers: [
-        {
-          answer: "2009",
-          right: "yes"
-        },
-        {
-          answer: "2010",
-          right: "no"
-        },
-        {
-          answer: "2011",
-          right: "no"
-        },
-        {
-          answer: "2012",
-          right: "no"
-        }
-      ]
-    },
-    {
-      question: "Quand est décédé Jacques Villeret ?",
-      answers: [
-        {
-          answer: "2009",
-          right: "yes"
-        },
-        {
-          answer: "2010",
-          right: "no"
-        },
-        {
-          answer: "2011",
-          right: "no"
-        },
-        {
-          answer: "2012",
-          right: "no"
-        }
-      ]
-    }
-  ];
-
+  questionsArray: any[];
 
 
   constructor(
     public platform: Platform,
     public params: NavParams,
     public viewCtrl: ViewController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public questionService: QuestionService
   ) {
-    this.question = this.questionsArray[this.index];
+
   }
 
+  setQuestions(res) {
+    this.questionsArray = res;
+    this.question = res[this.index];
+  }
+
+  ngOnInit(){
+    this.questionService.getQuestionList(this.params.get('category'))
+    .subscribe( (res) => this.setQuestions(res) )
+  }
 
   dismiss() {
     this.viewCtrl.dismiss();
@@ -102,12 +70,14 @@ export class QuestionPage {
       }
     }
     else {
-      this.presentToast("NOOB !")
+      this.presentToast("Oops !")
     }
     this.answerValue = '';
     this.index += 1;
     this.question = this.questionsArray[this.index];
     this.hint = 0;
+    this.hidden1 = -1;
+    this.hidden2 = -1;
   }
 
   giveHint(){
@@ -118,8 +88,6 @@ export class QuestionPage {
       let possibleRemoveIndices = _.difference([0,1,2,3], [wrongAnswerIndex])
       let firstRand = Math.floor((Math.random() * 3));
       let secondRand = (firstRand + Math.floor((Math.random() * 2)) + 1) % 3;
-      console.log(possibleRemoveIndices)
-      console.log(firstRand, secondRand)
       this.hidden1 = possibleRemoveIndices[firstRand];
       this.hidden2 = possibleRemoveIndices[secondRand];
       // console.log(this.hidden1, otherRand, this.hidden2)
@@ -131,7 +99,7 @@ export class QuestionPage {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 1000,
-      position: "top"
+      position: "bottom"
     });
     toast.present();
   }
