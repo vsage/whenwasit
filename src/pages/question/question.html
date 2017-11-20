@@ -12,7 +12,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card padding>
+  <ion-card padding *ngIf="index<9">
     <ion-card-content>
       <ion-card-title>
         {{question?.question}}
@@ -38,7 +38,11 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-  <ion-card padding>
+  <ion-card padding *ngIf="index<9">
     <h1 style="text-align:center">{{score}}</h1>
   </ion-card>
+  <ion-card padding *ngIf="index==9">
+    <h1 style="text-align:center">Congratz ! <br> Score : {{score}}<br> Meilleur Score: {{best}}</h1>
+  </ion-card>
+
 </ion-content>
